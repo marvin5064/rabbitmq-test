@@ -29,7 +29,7 @@ type queueSetup struct {
 }
 
 func main() {
-	mqConn, err := setupRabbitmq("amqp", "guest", "guest", "127.0.0.1", 8080)
+	mqConn, err := setupRabbitmq("amqp", "guest", "guest", "localhost", 8080)
 	if err != nil {
 		fmt.Println("setupRabbitmq", err)
 		return
@@ -40,11 +40,13 @@ func main() {
 		fmt.Println("setupFromFile", err)
 		return
 	}
+
+	RunTestCases(mqConn)
 	return
 }
 
 func setupRabbitmq(protocol, username, password, host string, port int) (*amqp.Connection, error) {
-	url := fmt.Sprintf("%s://%s:%s@%s:%d",
+	url := fmt.Sprintf("%s://%s:%s@%s:%d/",
 		protocol,
 		username,
 		password,
@@ -122,6 +124,10 @@ func setupExchange(e MqExchange, conn *amqp.Connection) error {
 			queue amqp.Queue
 			err   error
 		)
+		_, err = channel.QueueDelete(q.Name, false, false, true)
+		if err != nil {
+			return err
+		}
 		if q.AutoDeleted {
 			queue, err = channel.QueueDeclare(q.Name, false, true, false, false, amqp.Table{
 				"x-expires": AutoDeletedQueueTTL,
