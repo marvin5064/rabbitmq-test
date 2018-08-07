@@ -1,0 +1,19 @@
+{
+    "exchanges": [
+        {
+            "name": "sportsbook_test",
+            "type": "fanout",
+            "queues": [
+                {
+                    "name": "sportsbook_test_queue_1"
+                },
+                {
+                    "name": "sportsbook_test_queue_2"
+                },
+                {
+                    "name": "sportsbook_test_queue_3"
+                }
+            ]
+        }
+    ]
+}
