@@ -1,6 +1,11 @@
 # Makefile
+APPNAME  =`basename ${PWD}`
 
 .PHONY: rabbitmq
+
+run:
+	go build
+	./$(APPNAME)
 
 rabbitmq:
 	docker run -d \

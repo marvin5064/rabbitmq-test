@@ -29,12 +29,17 @@ type queueSetup struct {
 }
 
 func main() {
-	mqConn, err := setupRabbitmq("amqp", "guest", "guest", "localhost", 15672)
+	mqConn, err := setupRabbitmq("amqp", "guest", "guest", "127.0.0.1", 8080)
 	if err != nil {
 		fmt.Println("setupRabbitmq", err)
+		return
 	}
 
 	err = setupFromFile("./config/rabbitmq.json", mqConn)
+	if err != nil {
+		fmt.Println("setupFromFile", err)
+		return
+	}
 	return
 }
 
